@@ -102,8 +102,11 @@ class Funciones {
     }
 
     boolean todosPares(int[] numeros) {
-        // COMPLETAR
-        return false;
+        
+        for (int valor : numeros) {
+            if (!esPar(valor)) return false;
+        }
+        return true;
     }
 
     boolean esPrefijo(String s1, String s2) {
