@@ -123,7 +123,9 @@ class Funciones {
     boolean esSufijo(String s1, String s2) {
         
         String s2Invertido = invertir(s2);
-        return true
+        String s1Invertido =invertir(s1);
+
+        return esPrefijo(s1Invertido, s2Invertido);
 
         //podemos usar esPrefijo invirtiendo la segunda cadena de caracteres.
     }
