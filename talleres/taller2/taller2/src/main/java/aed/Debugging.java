@@ -37,13 +37,11 @@ class Debugging {
     }
 
     boolean todosPositivos(int[] xs) {
-        boolean res = false;
+        
+        boolean res = true;
+
         for (int x : xs) {
-            if (x > 0) {
-                res = true;
-            } else {
-                res = false;
-            }
+            if (!(x > 0)) res = false; // preguntar el por que todos las funciones tiene tan solo un return
         }
         return res;
     }
