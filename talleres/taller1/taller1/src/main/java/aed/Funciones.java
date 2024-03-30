@@ -102,7 +102,7 @@ class Funciones {
     }
 
     boolean todosPares(int[] numeros) {
-        
+
         for (int valor : numeros) {
             if (!esPar(valor)) return false;
         }
@@ -110,12 +110,25 @@ class Funciones {
     }
 
     boolean esPrefijo(String s1, String s2) {
-        // COMPLETAR
-        return false;
+        
+        if (s1.length() > s2.length()) return false;
+
+        for (int i = 0; i < s1.length(); i++){
+            if (s1.charAt(i) != s2.charAt(i)) return false;
+        }
+
+        return true;
     }
 
     boolean esSufijo(String s1, String s2) {
-        // COMPLETAR
-        return false;
+        
+        int largoS1 = s1.length();
+        int largoS2 = s2.length();
+        if (largoS1 > largoS2) return false;
+
+        for (int i = 0; i < largoS1; i++) {
+            if (s1.charAt(largoS1 -1 - i) != s2.charAt(largoS2 -1 -i)) return false;
+        }
+        return true;
     }
 }
