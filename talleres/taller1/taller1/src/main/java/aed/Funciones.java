@@ -122,13 +122,20 @@ class Funciones {
 
     boolean esSufijo(String s1, String s2) {
         
-        int largoS1 = s1.length();
-        int largoS2 = s2.length();
-        if (largoS1 > largoS2) return false;
+        String s2Invertido = invertir(s2);
+        return true
 
-        for (int i = 0; i < largoS1; i++) {
-            if (s1.charAt(largoS1 -1 - i) != s2.charAt(largoS2 -1 -i)) return false;
+        //podemos usar esPrefijo invirtiendo la segunda cadena de caracteres.
+    }
+
+    String invertir(String s) {
+        int largoS = s.length();
+        String nuevo = "";
+
+        for (int i = largoS - 1; i >= 0; i--) {
+            nuevo += s.charAt(i);
         }
-        return true;
+
+        return nuevo;
     }
 }
