@@ -79,8 +79,18 @@ class Funciones {
 
     int busqueda(int[] numeros, int buscado) {
 
-        return 0;
+        int indiceActual = 0;
 
+        for (int valor : numeros) {
+            if (valor == buscado) {
+                return indiceActual;
+            }
+            else {
+                indiceActual += 1;
+            }
+        }
+
+        return 0; //por alguna razon el compilador no toma solo al return de el for loop como valido
     }
 
     boolean tienePrimo(int[] numeros) {
