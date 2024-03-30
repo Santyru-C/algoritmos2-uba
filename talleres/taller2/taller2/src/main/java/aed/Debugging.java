@@ -6,14 +6,16 @@ class Debugging {
     }
 
     boolean iguales(int[] xs, int[] ys) {
-        boolean res = true;
+
+        if (xs.length != ys.length) return false;
 
         for (int i = 0; i < xs.length; i++) {
             if (xs[i] != ys[i]) {
-                res = false;
+                return false;
             }
         }
-        return res;
+
+        return true;
     }
 
     boolean ordenado(int[] xs) {
