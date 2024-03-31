@@ -29,9 +29,10 @@ class Debugging {
     }
 
     int maximo(int[] xs) {
-        int res = 0;
-        for (int i = 0; i <= xs.length; i++) {
-            if (xs[i] > res) res = i;
+        int res = xs[0];
+
+        for (int i = 0; i < xs.length; i++) {
+            if (xs[i] > res) res = xs[i];
         }
         return res;
     }
