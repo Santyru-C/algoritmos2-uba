@@ -1,38 +1,67 @@
 package aed;
 
 class ArregloRedimensionableDeRecordatorios implements SecuenciaDeRecordatorios {
+    private Recordatorio[] _data;
 
-    public ArregloRedimensionableDeRecordatorios() {
-        throw new UnsupportedOperationException("No implementada aun");
+    public ArregloRedimensionableDeRecordatorios() { //osea que podemos tener dos funciones con el mismo nombre que reciban distintas cosas?
+        _data = new Recordatorio[0];
     }
 
     public ArregloRedimensionableDeRecordatorios(ArregloRedimensionableDeRecordatorios vector) {
-        throw new UnsupportedOperationException("No implementada aun");
+        Recordatorio[] copia = new Recordatorio[vector.longitud()];
+
+        for (int i = 0; i < copia.length; i++) {
+            copia[i] = vector.obtener(i);
+        }
+
+        _data = copia;
+        
     }
 
     public int longitud() {
-        throw new UnsupportedOperationException("No implementada aun");
+        return _data.length;
     }
 
     public void agregarAtras(Recordatorio i) {
-        throw new UnsupportedOperationException("No implementada aun");
+        int new_length = _data.length + 1;
+        Recordatorio[] new_data = new Recordatorio[new_length];
+
+        for (int j = 0; j < _data.length; j++) {
+            new_data[j] = _data[j];
+        }
+
+        new_data[_data.length] = i;
+
+        _data = new_data;
     }
 
     public Recordatorio obtener(int i) {
-        throw new UnsupportedOperationException("No implementada aun");
+        return _data[i];
     }
 
     public void quitarAtras() {
-        throw new UnsupportedOperationException("No implementada aun");
+        int new_length = _data.length - 1;
+        Recordatorio[] new_data = new Recordatorio[new_length];
+
+        for (int i = 0; i < new_length; i++) {
+            new_data[i] = _data[i];
+        }
+
+        _data = new_data;
     }
 
     public void modificarPosicion(int indice, Recordatorio valor) {
-        throw new UnsupportedOperationException("No implementada aun");
-
+        _data[indice] = valor;
     }
 
     public ArregloRedimensionableDeRecordatorios copiar() {
-        throw new UnsupportedOperationException("No implementada aun");
+        ArregloRedimensionableDeRecordatorios copia = new ArregloRedimensionableDeRecordatorios();
+
+        for (int i = 0; i < _data.length; i++) {
+            copia.agregarAtras(_data[i]);
+        }
+
+        return copia;
     }
 
 }
