@@ -51,11 +51,6 @@ public class ListaEnlazada<T> implements Secuencia<T> {
             _lastNode = newNode;
         }
 
-        System.out.println("----");
-        System.out.println(_lastNode.prev);
-        System.out.println(_lastNode);
-        System.out.println(_lastNode.value);
-        System.out.println(_lastNode.next);
         _size++;
     }
 
@@ -64,7 +59,22 @@ public class ListaEnlazada<T> implements Secuencia<T> {
     }
 
     public void eliminar(int i) {
-        throw new UnsupportedOperationException("No implementada aun");
+        Nodo toDelete = getNodeByIndex(i);
+        if (_size != 1) { //estoy totalmente seguro que esto puede ser mas lindo
+            if (toDelete == _firstNode) {
+                toDelete.next.prev = toDelete.prev;
+                _firstNode = toDelete.next; //actualizamos el puntero
+            }
+            else if (toDelete == _lastNode) {
+                toDelete.prev.next = toDelete.next;
+                _lastNode = toDelete.prev;
+            }
+            else {
+                toDelete.next.prev = toDelete.prev; // link current's adyacent nodes with eachother.
+                toDelete.prev.next = toDelete.next;
+            }
+        }    
+        _size--;
     }
 
     public void modificarPosicion(int indice, T elem) {
@@ -118,6 +128,11 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         Nodo currentNode = _firstNode;
         
         for (int j = 0; j < i; j++) {
+            System.out.println("----");
+            System.out.println(currentNode.prev);
+            System.out.println(currentNode);
+            System.out.println(currentNode.value);
+            System.out.println(currentNode.next);
             currentNode = currentNode.next;
         }
 
