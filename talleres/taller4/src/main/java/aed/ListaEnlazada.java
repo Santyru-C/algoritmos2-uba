@@ -108,4 +108,14 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         _firstNode = newNode;
         _lastNode = newNode;
     }
+
+    private Nodo getNodeByIndex(int i) {
+        Nodo currentNode = _firstNode;
+        
+        for (int j = 0; j < i; j++) {
+            currentNode = _firstNode.next;
+        }
+
+        return currentNode;
+    }
 }
