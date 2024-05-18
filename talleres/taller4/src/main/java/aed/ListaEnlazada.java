@@ -61,6 +61,7 @@ public class ListaEnlazada<T> implements Secuencia<T> {
     public void eliminar(int i) {
         Nodo toDelete = getNodeByIndex(i);
         if (_size != 1) { //estoy totalmente seguro que esto puede ser mas lindo
+            
             if (toDelete == _firstNode) {
                 toDelete.next.prev = toDelete.prev;
                 _firstNode = toDelete.next; //actualizamos el puntero
