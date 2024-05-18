@@ -30,19 +30,28 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         Nodo newNode = new Nodo(elem);
         
         if (_size == 0) {
-            _firstNode = newNode;
-            _lastNode = newNode;
+            setStartingNode(newNode);
         } else {
             _firstNode.prev = newNode; //enlaza ambos eslabones de la cadena
             newNode.next = _firstNode;
-            _firstNode = newNode;
+            _firstNode = newNode; //change reference
         }
 
         _size++;
     }
 
     public void agregarAtras(T elem) {
-        throw new UnsupportedOperationException("No implementada aun");
+        Nodo newNode = new Nodo(elem);
+
+        if (_size == 0) {
+            setStartingNode(_firstNode);
+        } else {
+            _lastNode.next = newNode;
+            newNode.prev = _lastNode;
+            _lastNode = newNode;
+        }
+
+        _size++;
     }
 
     public T obtener(int i) {
@@ -95,4 +104,8 @@ public class ListaEnlazada<T> implements Secuencia<T> {
 	    throw new UnsupportedOperationException("No implementada aun");
     }
 
+    private void setStartingNode(Nodo newNode) {
+        _firstNode = newNode;
+        _lastNode = newNode;
+    }
 }
