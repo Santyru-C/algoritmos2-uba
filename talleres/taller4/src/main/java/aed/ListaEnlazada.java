@@ -4,19 +4,17 @@ import java.util.*;
 
 public class ListaEnlazada<T> implements Secuencia<T> {
     // Completar atributos privados
-    private Nodo _firstEle;
-    private Nodo _lastEle;
+    private Nodo _firstNode;
+    private Nodo _lastNode;
     private int _size;
 
-    // quizá un long?
-
     private class Nodo {
-        int value;
+        T value;
         Nodo next;
         Nodo prev;
 
-        public Nodo(int n) {
-            this.value = n;
+        public Nodo(T e) {
+            value = e;
         }
     }
 
@@ -27,9 +25,20 @@ public class ListaEnlazada<T> implements Secuencia<T> {
     public int longitud() {
         return _size;
     }
-
+    //remember... atomic commits..
     public void agregarAdelante(T elem) {
-        throw new UnsupportedOperationException("No implementada aun");
+        Nodo newNode = new Nodo(elem);
+        
+        if (_size == 0) {
+            _firstNode = newNode;
+            _lastNode = newNode;
+        } else {
+            _firstNode.prev = newNode; //enlaza ambos eslabones de la cadena
+            newNode.next = _firstNode;
+            _firstNode = newNode;
+        }
+
+        _size++;
     }
 
     public void agregarAtras(T elem) {
