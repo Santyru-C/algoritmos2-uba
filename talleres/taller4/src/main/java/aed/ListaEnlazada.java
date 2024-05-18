@@ -44,18 +44,23 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         Nodo newNode = new Nodo(elem);
 
         if (_size == 0) {
-            setStartingNode(_firstNode);
+            setStartingNode(newNode);
         } else {
             _lastNode.next = newNode;
             newNode.prev = _lastNode;
             _lastNode = newNode;
         }
 
+        System.out.println("----");
+        System.out.println(_lastNode.prev);
+        System.out.println(_lastNode);
+        System.out.println(_lastNode.value);
+        System.out.println(_lastNode.next);
         _size++;
     }
 
     public T obtener(int i) {
-        throw new UnsupportedOperationException("No implementada aun");
+        return getNodeByIndex(i).value;
     }
 
     public void eliminar(int i) {
@@ -113,7 +118,7 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         Nodo currentNode = _firstNode;
         
         for (int j = 0; j < i; j++) {
-            currentNode = _firstNode.next;
+            currentNode = currentNode.next;
         }
 
         return currentNode;
