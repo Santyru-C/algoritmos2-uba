@@ -128,19 +128,22 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         //seguramente esto sea un poco mas "sencillo" importando listas.
     }
 
-    private class ListaIterador implements Iterador<T> {
-    	// Completar atributos privados
+    private class ListaIterador implements Iterador<T> { //va a implementar todos los metodos vacios de iterador
+    	private int _position = 0;
 
         public boolean haySiguiente() {
-	        throw new UnsupportedOperationException("No implementada aun");
+            return _position != _size;
         }
         
         public boolean hayAnterior() {
-	        throw new UnsupportedOperationException("No implementada aun");
+            return _position != 0;
         }
 
         public T siguiente() {
-	        throw new UnsupportedOperationException("No implementada aun");
+            T value = obtener(_position);
+            _position++;
+
+            return value;
         }
         
 
@@ -150,7 +153,7 @@ public class ListaEnlazada<T> implements Secuencia<T> {
     }
 
     public Iterador<T> iterador() {
-	    throw new UnsupportedOperationException("No implementada aun");
+        return new ListaIterador();
     }
 
     private void setStartingNode(Nodo newNode) {
