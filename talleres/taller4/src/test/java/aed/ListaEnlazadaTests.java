@@ -179,8 +179,8 @@ class ListaEnlazadaTests {
         assertEquals(45, copiaDeLista.obtener(3));
 
         // Test aliasing interno
-        lista.modificarPosicion(0, 99);
-        assertEquals(42, copiaDeLista.obtener(0));
+        lista.modificarPosicion(0, 99); //claro, hay que evitar poner una referencia directa de los elementos
+        assertEquals(42, copiaDeLista.obtener(0)); //de la linked list original en la copia.
 
     }
 

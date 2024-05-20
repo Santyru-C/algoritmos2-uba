@@ -80,10 +80,23 @@ public class ListaEnlazada<T> implements Secuencia<T> {
 
     public void modificarPosicion(int indice, T elem) {
         getNodeByIndex(indice).value = elem;
+
     }
     
     public ListaEnlazada<T> copiar() {
-        throw new UnsupportedOperationException("No implementada aun");
+        /*tenemos que devolver una lista que sea igual a la pasada pero obviamente
+         * tenemos que evitar el aliassing. Para eso, cada vez que tengamos que copiar
+         * uno de los eslabones de la cadena, vamos a crear un nuevo eslabon con
+         * que tenga el mismo valor como atributo
+         */
+
+        ListaEnlazada<T> copia = new ListaEnlazada<T>();
+
+        for (int i = 0; i < this._size; i++) {
+            copia.agregarAtras(this.obtener(i));
+        }
+
+        return copia;
     }
 
     public ListaEnlazada(ListaEnlazada<T> lista) {
