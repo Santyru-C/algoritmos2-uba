@@ -100,7 +100,15 @@ public class ListaEnlazada<T> implements Secuencia<T> {
     }
 
     public ListaEnlazada(ListaEnlazada<T> lista) {
-        throw new UnsupportedOperationException("No implementada aun");
+        //básicamente generar una nueva linked list a partir de otra
+        // tener cuidado con el aliasing.
+
+        ListaEnlazada<T> newLinkedList = lista.copiar();
+
+        this._firstNode = newLinkedList._firstNode;
+        this._lastNode = newLinkedList._lastNode;
+        this._size = newLinkedList._size;
+        
     }
     
     @Override
