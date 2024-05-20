@@ -151,7 +151,7 @@ class ListaEnlazadaTests {
         lista.agregarAtras(44);
         lista.agregarAtras(45);
 
-        lista.modificarPosicion(2, 27);
+        lista.modificarPosicion(2, 27); //osea que tan solo modifica el valor del nodo correspondiente
 
         assertEquals(4, lista.longitud());
         assertEquals(42, lista.obtener(0));

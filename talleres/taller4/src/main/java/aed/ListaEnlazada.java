@@ -79,9 +79,9 @@ public class ListaEnlazada<T> implements Secuencia<T> {
     }
 
     public void modificarPosicion(int indice, T elem) {
-        throw new UnsupportedOperationException("No implementada aun");
+        getNodeByIndex(indice).value = elem;
     }
-
+    
     public ListaEnlazada<T> copiar() {
         throw new UnsupportedOperationException("No implementada aun");
     }
