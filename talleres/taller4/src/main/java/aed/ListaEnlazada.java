@@ -148,7 +148,10 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         
 
         public T anterior() {
-	        throw new UnsupportedOperationException("No implementada aun");
+            T value = obtener(_position - 1); //guarda el elemento anterior
+            _position--;
+
+            return value;
         }
     }
 
