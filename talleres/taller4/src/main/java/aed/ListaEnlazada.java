@@ -108,12 +108,24 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         this._firstNode = newLinkedList._firstNode;
         this._lastNode = newLinkedList._lastNode;
         this._size = newLinkedList._size;
-        
+
     }
     
     @Override
     public String toString() {
-        throw new UnsupportedOperationException("No implementada aun");
+        // devuelve la conversion a string de un array que contiene todos los valores
+        // correspondientes a cada eslabon de la lista.
+        //me encanta que java no te deje crear arrays genericos de tipo T...
+
+        String values = "[" + this.obtener(0) + ","; // agregamos el primero
+
+        for (int i = 1; i < _size - 1; i++) {
+            values = values + " " + this.obtener(i) + ","; //agregamos los del medio
+        }
+
+        return values + " " + this.obtener(_size - 1) + "]"; //y por ultimo el final
+
+        //seguramente esto sea un poco mas "sencillo" importando listas.
     }
 
     private class ListaIterador implements Iterador<T> {
