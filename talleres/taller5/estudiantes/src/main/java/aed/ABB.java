@@ -79,11 +79,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         }
 
         //establecemos maximo y minimo
-        if (_cardinal == 0) {
-            _max = elem;
-            _min = elem;
-        }
-        else if (_max)
+        actualizarMaximoYMinimo(elem);
         _cardinal++;
 
     }
