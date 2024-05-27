@@ -11,6 +11,11 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
 
     private class Nodo {
         // Agregar atributos privados del Nodo
+        private Nodo _padre;
+        private Nodo _izq;
+        private Nodo _der;
+        private Comparable<T> valor;
+        
         // Crear Constructor del nodo
     }
 
