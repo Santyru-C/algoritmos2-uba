@@ -41,18 +41,18 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     }
 
     public T minimo(){
-        throw new UnsupportedOperationException("No implementada aun");//estos van a ser atributos privados
+        return _min;
     }
 
     public T maximo(){
-        throw new UnsupportedOperationException("No implementada aun");
+        return _max;
     }
 
     public void insertar(T elem){
         if (pertenece(elem)) {
             return;
         }
-        
+
         Nodo nuevo_nodo = new Nodo(elem);
         Nodo actual = _raiz;
         Nodo padre_actual = null;
