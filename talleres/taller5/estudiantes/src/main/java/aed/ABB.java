@@ -8,17 +8,19 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     private Nodo _raiz;
     private int _cardinal;
     private int _altura;
+    private T _max;
+    private T _min;
 
     private class Nodo {
         // Agregar atributos privados del Nodo
         private Nodo _padre;
         private Nodo _izq;
         private Nodo _der;
-        private Comparable<T> _valor;
+        private T _valor;
 
         // Crear Constructor del nodo
 
-        public Nodo(Comparable<T> e) {
+        public Nodo(T e) {
             _padre = null;
             _izq = null;
             _der = null;
@@ -30,6 +32,8 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         _raiz = null;
         _cardinal = 0;
         _altura = 0;
+        _max = null;
+        _min = null;
     }
 
     public int cardinal() {
@@ -37,7 +41,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     }
 
     public T minimo(){
-        throw new UnsupportedOperationException("No implementada aun");
+        throw new UnsupportedOperationException("No implementada aun");//estos van a ser atributos privados
     }
 
     public T maximo(){
@@ -45,7 +49,43 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     }
 
     public void insertar(T elem){
-        throw new UnsupportedOperationException("No implementada aun");
+        Nodo nuevo_nodo = new Nodo(elem);
+        Nodo actual = _raiz;
+        Nodo padre_actual = null;
+
+        while (actual != null) {
+
+            padre_actual = actual._padre;
+            if (elem.compareTo(actual._valor) < 0) {
+                padre_actual = actual;
+                actual = actual._izq;
+            } 
+            else {
+                padre_actual = actual;
+                actual = actual._der;
+            }
+        }
+
+        nuevo_nodo._padre = padre_actual;
+
+        if (padre_actual == null) {
+            _raiz = nuevo_nodo;
+        }
+        else if (elem.compareTo(padre_actual._valor) < 0) {
+            padre_actual._izq = nuevo_nodo;
+        }
+        else {
+            padre_actual._der = nuevo_nodo;
+        }
+
+        //establecemos maximo y minimo
+        if (_cardinal == 0) {
+            _max = elem;
+            _min = elem;
+        }
+        else if (_max)
+        _cardinal++;
+
     }
 
     public boolean pertenece(T elem){
@@ -76,4 +116,16 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         return new ABB_Iterador();
     }
 
+    private void actualizarMaximoYMinimo(T elem) {
+        if (_cardinal == 0) {
+            _max = elem;
+            _min = elem;
+        }
+        else if (_max.compareTo(elem) < 0) {
+            _max = elem;
+        }
+        else if (_min.compareTo(elem) > 0) {
+            _min = elem;
+        }
+    }
 }
