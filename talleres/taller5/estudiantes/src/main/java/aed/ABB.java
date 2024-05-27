@@ -49,6 +49,10 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     }
 
     public void insertar(T elem){
+        if (pertenece(elem)) {
+            return;
+        }
+        
         Nodo nuevo_nodo = new Nodo(elem);
         Nodo actual = _raiz;
         Nodo padre_actual = null;
@@ -85,7 +89,21 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     }
 
     public boolean pertenece(T elem){
-        throw new UnsupportedOperationException("No implementada aun");
+        Nodo actual = _raiz;
+
+        while (actual != null) {
+            if (elem.compareTo(actual._valor) == 0) {
+                return true;
+            }
+            else if (elem.compareTo(actual._valor) < 0) {
+                actual = actual._izq;
+            }
+            else {
+                actual = actual._der;
+            }
+        }
+
+        return false;
     }
 
     public void eliminar(T elem){

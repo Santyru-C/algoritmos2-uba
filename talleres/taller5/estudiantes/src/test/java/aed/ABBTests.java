@@ -35,7 +35,7 @@ class ABBTests {
         assertEquals(3, conjunto.cardinal());
         conjunto.insertar(4);
         assertEquals(4, conjunto.cardinal());
-        conjunto.insertar(4);
+        conjunto.insertar(4); //
         assertEquals(4, conjunto.cardinal());
 
         assertEquals(true, conjunto.pertenece(4));
