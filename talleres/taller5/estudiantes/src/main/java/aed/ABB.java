@@ -89,25 +89,11 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     }
 
     public boolean pertenece(T elem){
-        Nodo actual = _raiz;
-
-        while (actual != null) {
-            if (elem.compareTo(actual._valor) == 0) {
-                return true;
-            }
-            else if (elem.compareTo(actual._valor) < 0) {
-                actual = actual._izq;
-            }
-            else {
-                actual = actual._der;
-            }
-        }
-
-        return false;
+        return buscarNodoPorElemento(elem) != null;
     }
 
     public void eliminar(T elem){
-        throw new UnsupportedOperationException("No implementada aun");
+        // 3 casos o 4 si tomamos en cuenta cuando el arbol es nulo
     }
 
     public String toString(){
@@ -141,5 +127,25 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         else if (_min.compareTo(elem) > 0) {
             _min = elem;
         }
+    }
+
+    private Nodo buscarNodoPorElemento(T elem) { // devuelve el nodo nulo si no se encuentra
+        Nodo actual = _raiz;
+
+        while (actual != null) {
+            int comparacion = elem.compareTo(actual._valor);
+
+            if (comparacion == 0) {
+                return actual;
+            }
+            else if (comparacion < 0) {
+                actual = actual._izq;
+            }
+            else {
+                actual = actual._der;
+            }
+        }
+
+        return actual;
     }
 }
