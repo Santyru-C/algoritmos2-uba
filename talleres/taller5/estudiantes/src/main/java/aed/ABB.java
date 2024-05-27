@@ -27,7 +27,9 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     }
 
     public ABB() {
-        throw new UnsupportedOperationException("No implementada aun");
+        _raiz = null;
+        _cardinal = 0;
+        _altura = 0;
     }
 
     public int cardinal() {
