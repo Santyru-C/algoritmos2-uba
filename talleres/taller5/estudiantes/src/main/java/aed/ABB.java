@@ -33,7 +33,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     }
 
     public int cardinal() {
-        throw new UnsupportedOperationException("No implementada aun");
+        return _cardinal;
     }
 
     public T minimo(){
