@@ -11,12 +11,13 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     private T _max;
     private T _min;
 
-    private class Nodo {
+    public class Nodo {
         // Agregar atributos privados del Nodo
         private Nodo _padre;
         private Nodo _izq;
         private Nodo _der;
         private T _valor;
+        private int _hijos;
 
         // Crear Constructor del nodo
 
@@ -25,6 +26,24 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
             _izq = null;
             _der = null;
             _valor = e;
+            _hijos = 0;
+        }
+
+        public void agregarHijo (Nodo hijo) {
+            int comparacion = _valor.compareTo(hijo._valor);
+
+            if (comparacion > 0) {
+                _izq = hijo;
+            }
+            else {
+                _der = hijo;
+            }
+
+            _hijos++;
+        }
+
+        public T valor() {
+            return _valor;
         }
     }
 
@@ -75,11 +94,8 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         if (padre_actual == null) {
             _raiz = nuevo_nodo;
         }
-        else if (elem.compareTo(padre_actual._valor) < 0) {
-            padre_actual._izq = nuevo_nodo;
-        }
         else {
-            padre_actual._der = nuevo_nodo;
+            padre_actual.agregarHijo(nuevo_nodo);
         }
 
         //establecemos maximo y minimo
@@ -94,10 +110,41 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
 
     public void eliminar(T elem){
         // 3 casos o 4 si tomamos en cuenta cuando el arbol es nulo
+        Nodo a_eliminar = buscarNodoPorElemento(elem);
+
+            //si elimino maximo actualizar valor
+            //si elimino minimo actualizar valor
+            // tener cuenta si el eliminado es la raiz
+        
+        if (a_eliminar == null) {
+            ;
+        }
+        else if (a_eliminar._hijos == 1) {  
+            Nodo hijo = a_eliminar._der == null? a_eliminar._izq : a_eliminar._der;
+            a_eliminar._padre.agregarHijo(hijo);
+            hijo._padre = a_eliminar._padre;
+        }
+        else if (a_eliminar._hijos == 2) {
+
+        }
+
+        _cardinal--;
     }
 
     public String toString(){
-        throw new UnsupportedOperationException("No implementada aun");
+        Nodo actual = buscarNodoPorElemento(_min);
+        String cadena = "{" + actual._valor  + ",";
+        System.out.println(actual);
+
+        actual = buscarSucesor(actual);
+
+        while (buscarSucesor(actual) != null) {
+            System.out.println(actual._valor);
+            cadena = cadena + actual._valor + ",";
+            actual = buscarSucesor(actual);
+        }
+
+        return cadena + actual._valor + "}";
     }
 
     private class ABB_Iterador implements Iterador<T> {
@@ -129,7 +176,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         }
     }
 
-    private Nodo buscarNodoPorElemento(T elem) { // devuelve el nodo nulo si no se encuentra
+    public Nodo buscarNodoPorElemento(T elem) { // devuelve el nodo nulo si no se encuentra
         Nodo actual = _raiz;
 
         while (actual != null) {
@@ -147,5 +194,32 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         }
 
         return actual;
+    }
+
+    public Nodo buscarSucesor(Nodo actual) {
+        Nodo sucesor;
+
+        if (actual._valor == _max) {
+            sucesor = null;
+        }
+        else if (actual._der != null) {
+            // uno a la derecha y todos a la izquiera
+            sucesor = actual._der;
+
+            while (sucesor._izq != null) {
+                sucesor = sucesor._izq;
+            }
+        }
+        else {
+            sucesor = actual._padre;
+
+            while (sucesor != null && sucesor._valor.compareTo(actual._valor) < 0){
+                sucesor = sucesor._padre;
+            }
+        }
+
+        //y el caso en el que no hay sucesor?
+
+        return sucesor;
     }
 }

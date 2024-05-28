@@ -112,6 +112,44 @@ class ABBTests {
     }
 
     @Test
+    void buscar_nodo() {
+        ABB<Integer> conjunto = new ABB<Integer>();
+
+        conjunto.insertar(5);
+        conjunto.insertar(4);
+        conjunto.insertar(7);
+        conjunto.insertar(6);
+        conjunto.insertar(8);
+        assertEquals(4, conjunto.buscarNodoPorElemento(4).valor());
+        assertEquals(7, conjunto.buscarNodoPorElemento(7).valor());
+        assertEquals(null, conjunto.buscarNodoPorElemento(9));
+
+        
+    }
+
+    @Test
+    void buscar_sucesor() {
+        ABB<Integer> conjunto = new ABB<Integer>();
+
+        conjunto.insertar(5);
+        conjunto.insertar(4);
+        conjunto.insertar(7);
+        conjunto.insertar(6);
+        conjunto.insertar(8);
+
+        assertEquals(8, conjunto.maximo());
+        assertEquals(5, conjunto.buscarSucesor(conjunto.buscarNodoPorElemento(4)).valor());
+        assertEquals(6, conjunto.buscarSucesor(conjunto.buscarNodoPorElemento(5)).valor());
+        assertEquals(7, conjunto.buscarSucesor(conjunto.buscarNodoPorElemento(6)).valor());
+        assertEquals(null, conjunto.buscarSucesor(conjunto.buscarNodoPorElemento(8)));
+
+        ABB<Integer> conjunto2 = new ABB<Integer>();
+
+        conjunto2.insertar(1);
+        //test sucesor de la raiz
+        assertEquals(null, conjunto2.buscarSucesor(conjunto2.buscarNodoPorElemento(1)));
+    }
+    @Test
     void eliminar_raiz() {
         ABB<Integer> conjunto = new ABB<Integer>();
         
@@ -128,7 +166,7 @@ class ABBTests {
     }
 
     @Test
-    void eliminar_elemento_con_doble_descendencia() {
+    void eliminar_elemento_con_doble_descendencia() { //los tests no cubren bien los casos
         ABB<Integer> conjunto = new ABB<Integer>();
         
         conjunto.insertar(5);
