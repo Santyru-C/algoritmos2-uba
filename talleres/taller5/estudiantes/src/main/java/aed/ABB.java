@@ -121,11 +121,40 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         }
         else if (a_eliminar._hijos == 1) {  
             Nodo hijo = a_eliminar._der == null? a_eliminar._izq : a_eliminar._der;
-            a_eliminar._padre.agregarHijo(hijo);
+
+            if (a_eliminar._padre != null) { //evitamos errores en el caso de que sea raiz
+                a_eliminar._padre.agregarHijo(hijo);
+            }
+
             hijo._padre = a_eliminar._padre;
         }
         else if (a_eliminar._hijos == 2) {
+            Nodo sucesor = buscarSucesor(a_eliminar);
+            
+            if (sucesor._valor.compareTo(sucesor._padre._valor) < 0) {
+                sucesor._padre._izq = null; //"cortamos" la referencia de el sucesor a su anterior padre
+            }
+            else {
+                sucesor._padre._der = null;
+            }
+            
+            sucesor._padre = a_eliminar._padre;
 
+            if (a_eliminar._padre != null) {
+                a_eliminar._padre.agregarHijo(sucesor);
+            }
+
+            sucesor._izq = a_eliminar._izq;
+            sucesor._der = a_eliminar._der;
+
+            if (a_eliminar._izq != null) { //establecemos el nuevo nodo como padre de los hijos anteriores.
+                a_eliminar._izq._padre = sucesor;
+            }
+
+            if (a_eliminar._der !=null) {
+                a_eliminar._der._padre = sucesor;
+            }
+            
         }
 
         _cardinal--;
@@ -134,12 +163,10 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     public String toString(){
         Nodo actual = buscarNodoPorElemento(_min);
         String cadena = "{" + actual._valor  + ",";
-        System.out.println(actual);
 
         actual = buscarSucesor(actual);
 
         while (buscarSucesor(actual) != null) {
-            System.out.println(actual._valor);
             cadena = cadena + actual._valor + ",";
             actual = buscarSucesor(actual);
         }
@@ -148,10 +175,10 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     }
 
     private class ABB_Iterador implements Iterador<T> {
-        private Nodo _actual;
+        private Nodo _actual = buscarNodoPorElemento(_min);
 
-        public boolean haySiguiente() {            
-            throw new UnsupportedOperationException("No implementada aun");
+        public boolean haySiguiente() {
+            return buscarSucesor(_actual)._valor != null;
         }
     
         public T siguiente() {
