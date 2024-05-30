@@ -77,8 +77,8 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         Nodo padre_actual = null;
 
         while (actual != null) {
+            padre_actual = actual._padre; //quiza esta linea sea redundante
 
-            padre_actual = actual._padre;
             if (elem.compareTo(actual._valor) < 0) {
                 padre_actual = actual;
                 actual = actual._izq;
@@ -109,40 +109,61 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     }
 
     public void eliminar(T elem){
-        // 3 casos o 4 si tomamos en cuenta cuando el arbol es nulo
         Nodo a_eliminar = buscarNodoPorElemento(elem);
 
-            //si elimino maximo actualizar valor
-            //si elimino minimo actualizar valor
-            // tener cuenta si el eliminado es la raiz
-        
-        if (a_eliminar == null) {
+        //actualizamos de entrada los nuevos valores de _min y _max en caso necesario.
+        if (a_eliminar == _min) {
+            _min = buscarSucesor(a_eliminar)._valor;
+        }
+
+        if (a_eliminar == _max) {
+            _max = buscarAntecesor(a_eliminar)._valor;
+        }
+
+
+        if (a_eliminar == null) { //si no esta...
             ;
+        }
+        else if (a_eliminar._hijos == 0) { //no tiene hijos
+            //podria hacer una funcion que anule algun nodo descendiente si este existe
+            if (a_eliminar._padre != null) {
+                if (a_eliminar._valor.compareTo(a_eliminar._padre._valor) < 0) {
+                    a_eliminar._padre._izq = null;
+                }
+                else {
+                    a_eliminar._padre._der = null;
+                }
+            }
         }
         else if (a_eliminar._hijos == 1) {  
             Nodo hijo = a_eliminar._der == null? a_eliminar._izq : a_eliminar._der;
 
-            if (a_eliminar._padre != null) { //evitamos errores en el caso de que sea raiz
+            if (a_eliminar._padre != null) { //evitamos errores en el caso de que sea raiz la eliminada
                 a_eliminar._padre.agregarHijo(hijo);
+            }
+            else {
+                _raiz = hijo;
             }
 
             hijo._padre = a_eliminar._padre;
         }
         else if (a_eliminar._hijos == 2) {
             Nodo sucesor = buscarSucesor(a_eliminar);
-            
-            if (sucesor._valor.compareTo(sucesor._padre._valor) < 0) {
-                sucesor._padre._izq = null; //"cortamos" la referencia de el sucesor a su anterior padre
+
+            //nos aseguramos de pasar una referencia de EL hijo del sucesor al padre de este.
+            //"cortamos" la referencia de el sucesor a su anterior padre
+            //con este if else nos aseguramos que podamos utilizar tanto el sucesor como el antecesor inmmediato
+            sucesor._padre._izq = sucesor._der;
+
+/*             if (sucesor._valor.compareTo(sucesor._padre._valor) < 0) {
+                sucesor._padre._izq = sucesor._der;
             }
             else {
-                sucesor._padre._der = null;
-            }
+                sucesor._padre._der = sucesor._izq;
+            } */
             
+            //establecemos el nuevo padre al sucesor
             sucesor._padre = a_eliminar._padre;
-
-            if (a_eliminar._padre != null) {
-                a_eliminar._padre.agregarHijo(sucesor);
-            }
 
             sucesor._izq = a_eliminar._izq;
             sucesor._der = a_eliminar._der;
@@ -154,9 +175,16 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
             if (a_eliminar._der !=null) {
                 a_eliminar._der._padre = sucesor;
             }
-            
-        }
 
+            if (a_eliminar._padre != null) {
+                a_eliminar._padre.agregarHijo(sucesor);
+            } 
+            else {
+                _raiz = sucesor;
+            }
+            //estoy perdiendo referencias, solucionar eso.
+        }
+        
         _cardinal--;
     }
 
@@ -182,7 +210,9 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         }
     
         public T siguiente() {
-            throw new UnsupportedOperationException("No implementada aun");
+            T res = _actual._valor;
+            _actual = buscarSucesor(_actual);
+            return res;
         }
     }
 
@@ -226,6 +256,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     public Nodo buscarSucesor(Nodo actual) {
         Nodo sucesor;
 
+        //maximo no tiene sucesor
         if (actual._valor == _max) {
             sucesor = null;
         }
@@ -245,8 +276,39 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
             }
         }
 
-        //y el caso en el que no hay sucesor?
-
         return sucesor;
+    }
+
+    public Nodo buscarAntecesor(Nodo actual) {
+        Nodo antecesor;
+
+        //minimo no tiene antecesor
+        if (actual._valor == _min) {
+            antecesor = null;
+        }
+
+        else if (actual._izq != null) {
+            // uno a la izquierda y todos a la derecha
+            antecesor = actual._izq;
+
+            while (antecesor._der != null) {
+                antecesor = antecesor._der;
+            }
+        }
+        else {
+            //caso que el antecesor es a su vez ancestro.
+            //primer ancestro izquierdo (el primer ancestro mas chico)
+            //devuelve null si actual es raiz.
+            antecesor = actual._padre;
+
+            while (antecesor != null && antecesor._valor.compareTo(actual._valor) > 0){
+                antecesor = antecesor._padre;
+            }
+        }
+        
+        return antecesor;
+    }
+    public Nodo raiz() {
+        return _raiz;
     }
 }
