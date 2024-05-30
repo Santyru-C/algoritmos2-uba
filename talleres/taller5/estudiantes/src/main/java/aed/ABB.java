@@ -51,8 +51,8 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         _raiz = null;
         _cardinal = 0;
         _altura = 0;
-        _max = null;
-        _min = null;
+        _max = null; //a eliminar.
+        _min = null; //a eliminar.
     }
 
     public int cardinal() {
@@ -60,11 +60,33 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     }
 
     public T minimo(){
-        return _min;
+        Nodo actual = _raiz;
+
+        //caso en el que el árbol está vacío
+        if (actual != null) {
+            //mientras se pueda ir a la izquierda...
+            while (actual._izq != null) {
+                //...ir a la izquierda
+                actual = actual._izq;
+            }
+        }
+
+        return actual._valor;
     }
 
     public T maximo(){
-        return _max;
+        Nodo actual = _raiz;
+
+        //caso en el que el árbol está vacío
+        if (actual != null) {
+            //mientras se pueda ir a la derecha...
+            while (actual._der != null) {
+                //...ir a la derecha
+                actual = actual._der;
+            }
+        }
+
+        return actual._valor;
     }
 
     public void insertar(T elem){
@@ -171,7 +193,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     }
 
     public String toString(){
-        Nodo actual = buscarNodoPorElemento(_min);
+        Nodo actual = buscarNodoPorElemento(this.minimo());
         String cadena = "{" + actual._valor  + ",";
 
         actual = buscarSucesor(actual);
