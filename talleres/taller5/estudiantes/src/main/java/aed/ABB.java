@@ -120,8 +120,6 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
             padre_actual.agregarHijo(nuevo_nodo);
         }
 
-        //establecemos maximo y minimo
-        actualizarMaximoYMinimo(elem);
         _cardinal++;
 
     }
@@ -208,7 +206,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     }
 
     private class ABB_Iterador implements Iterador<T> {
-        private Nodo _actual = buscarNodoPorElemento(_min);
+        private Nodo _actual = buscarNodoPorElemento(minimo());
 
         public boolean haySiguiente() {
             return buscarSucesor(_actual)._valor != null;
@@ -223,19 +221,6 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
 
     public Iterador<T> iterador() {
         return new ABB_Iterador();
-    }
-
-    private void actualizarMaximoYMinimo(T elem) {
-        if (_cardinal == 0) {
-            _max = elem;
-            _min = elem;
-        }
-        else if (_max.compareTo(elem) < 0) {
-            _max = elem;
-        }
-        else if (_min.compareTo(elem) > 0) {
-            _min = elem;
-        }
     }
 
     public Nodo buscarNodoPorElemento(T elem) { // devuelve el nodo nulo si no se encuentra
