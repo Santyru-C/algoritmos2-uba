@@ -111,80 +111,62 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     public void eliminar(T elem){
         Nodo a_eliminar = buscarNodoPorElemento(elem);
 
-        //actualizamos de entrada los nuevos valores de _min y _max en caso necesario.
-        if (a_eliminar == _min) {
-            _min = buscarSucesor(a_eliminar)._valor;
-        }
+        //primer caso, el nodo a eliminar no tiene descendientes.
+        if (a_eliminar._hijos == 0) {
 
-        if (a_eliminar == _max) {
-            _max = buscarAntecesor(a_eliminar)._valor;
-        }
-
-
-        if (a_eliminar == null) { //si no esta...
-            ;
-        }
-        else if (a_eliminar._hijos == 0) { //no tiene hijos
-            //podria hacer una funcion que anule algun nodo descendiente si este existe
-            if (a_eliminar._padre != null) {
-                if (a_eliminar._valor.compareTo(a_eliminar._padre._valor) < 0) {
-                    a_eliminar._padre._izq = null;
-                }
-                else {
-                    a_eliminar._padre._der = null;
-                }
+            //caso de que sea el unico nodo del árbol
+            if (a_eliminar == _raiz) {
+                _raiz = null;
             }
+
+            //caso en que no...
+            //borramos la conexion a su padre
+            if (a_eliminar._valor.compareTo(a_eliminar._padre._valor) < 0) {
+                a_eliminar._padre._izq = null; //podria ser una funcion que sea romper enlace padre/izq/der
+                a_eliminar._padre._hijos--; //abstraer esto porque se repite
+            }
+            else {
+                a_eliminar._padre._der = null;
+                a_eliminar._padre._hijos--;
+            }
+
+            //rompemos el enlace de este nodo a su antiguo padre.
+            a_eliminar._padre = null;
+
         }
-        else if (a_eliminar._hijos == 1) {  
+        else if (a_eliminar._hijos == 1) {
             Nodo hijo = a_eliminar._der == null? a_eliminar._izq : a_eliminar._der;
 
-            if (a_eliminar._padre != null) { //evitamos errores en el caso de que sea raiz la eliminada
-                a_eliminar._padre.agregarHijo(hijo);
-            }
-            else {
-                _raiz = hijo;
+            //cambiamos la referencia hacia el nuevo padre.
+            hijo._padre = a_eliminar._padre;
+
+            //en el caso de que no sea raiz, y por lo tanto tengamos que reasignar referencia de padre a hijo
+            if (a_eliminar != _raiz) {
+                
+                if (a_eliminar._valor.compareTo(a_eliminar._padre._valor) < 0) {
+                    a_eliminar._padre._izq = hijo;
+                }
+                else {
+                    a_eliminar._padre._der = hijo;
+                }
             }
 
-            hijo._padre = a_eliminar._padre;
         }
         else if (a_eliminar._hijos == 2) {
-            Nodo sucesor = buscarSucesor(a_eliminar);
+            Nodo sucesor_inmediato = buscarSucesor(a_eliminar);
+            T nuevo_valor = sucesor_inmediato._valor;
 
-            //nos aseguramos de pasar una referencia de EL hijo del sucesor al padre de este.
-            //"cortamos" la referencia de el sucesor a su anterior padre
-            //con este if else nos aseguramos que podamos utilizar tanto el sucesor como el antecesor inmmediato
-            sucesor._padre._izq = sucesor._der;
+            //eliminamos el sucesor (lo hacemos primero para evitar que elimine al padre cuando peguemos el valor)
+            eliminar(sucesor_inmediato._valor);
 
-/*             if (sucesor._valor.compareTo(sucesor._padre._valor) < 0) {
-                sucesor._padre._izq = sucesor._der;
-            }
-            else {
-                sucesor._padre._der = sucesor._izq;
-            } */
-            
-            //establecemos el nuevo padre al sucesor
-            sucesor._padre = a_eliminar._padre;
+            //copiamos el valor del sucesor en el nodo a eliminar;
+            a_eliminar._valor = nuevo_valor;
 
-            sucesor._izq = a_eliminar._izq;
-            sucesor._der = a_eliminar._der;
+            //chanchada
+            _cardinal++;
 
-            if (a_eliminar._izq != null) { //establecemos el nuevo nodo como padre de los hijos anteriores.
-                a_eliminar._izq._padre = sucesor;
-            }
-
-            if (a_eliminar._der !=null) {
-                a_eliminar._der._padre = sucesor;
-            }
-
-            if (a_eliminar._padre != null) {
-                a_eliminar._padre.agregarHijo(sucesor);
-            } 
-            else {
-                _raiz = sucesor;
-            }
-            //estoy perdiendo referencias, solucionar eso.
         }
-        
+
         _cardinal--;
     }
 
@@ -200,6 +182,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         }
 
         return cadena + actual._valor + "}";
+    
     }
 
     private class ABB_Iterador implements Iterador<T> {
@@ -308,6 +291,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         
         return antecesor;
     }
+    
     public Nodo raiz() {
         return _raiz;
     }

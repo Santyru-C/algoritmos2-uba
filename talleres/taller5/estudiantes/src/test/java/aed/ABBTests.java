@@ -278,11 +278,12 @@ class ABBTests {
         }
 
         // Eliminar los valores para i par
+        System.out.println(conjunto.toString());
         for (Integer i = 0; i < NCLAVES; i++) {
             Integer k = clave(i);
-            System.out.println(k);
             assertEquals(true, conjunto.pertenece(k));
             if (i % 2 == 0) {
+                System.out.println("eliminar: " + k);
                 conjunto.eliminar(k);
                 System.out.println(conjunto.toString());
                 assertEquals(false, conjunto.pertenece(k));
@@ -290,6 +291,20 @@ class ABBTests {
         }
         assertEquals(NCLAVES / 2, conjunto.cardinal());
         
+        // Eliminar los valores para i impar
+        System.out.println(conjunto.toString());
+        for (Integer i = 0; i < NCLAVES; i++) {
+            Integer k = clave(i);
+            if (i % 2 == 0) { //esto no es impar
+                assertEquals(false,conjunto.pertenece(k));
+            } else {
+                assertEquals(true, conjunto.pertenece(k));
+                System.out.println("eliminar: " + k);
+                conjunto.eliminar(k);
+                System.out.println(conjunto.toString());
+                assertEquals(false,conjunto.pertenece(k));
+            }
+        }
 
         assertEquals(0, conjunto.cardinal());
 
