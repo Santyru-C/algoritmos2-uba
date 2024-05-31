@@ -94,6 +94,25 @@ class ABBTests {
         assertEquals(7, conjunto.maximo());        
     }
 
+    @Test
+    void invariante_valido() {
+        ABB<Integer> conjunto = new ABB<Integer>();
+        assertTrue(conjunto.invariante(conjunto.raiz()));
+
+
+        conjunto.insertar(5);
+        conjunto.insertar(6);
+        conjunto.insertar(7);
+
+        assertEquals(true, conjunto.invariante(conjunto.raiz()));
+
+        conjunto.eliminar(6);
+
+        assertTrue(conjunto.invariante(conjunto.raiz()));
+
+    }
+    
+
     
     @Test
     void eliminar_elemento_con_dos_descendientes() {
@@ -265,6 +284,7 @@ class ABBTests {
             assertEquals(false, conjunto.pertenece(k));
             conjunto.insertar(k);
             assertEquals(true, conjunto.pertenece(k));
+            assertTrue(conjunto.invariante(conjunto.raiz()));
         }
         assertEquals(NCLAVES, conjunto.cardinal());
     
@@ -285,6 +305,7 @@ class ABBTests {
             if (i % 2 == 0) {
                 System.out.println("eliminar: " + k);
                 conjunto.eliminar(k);
+                assertTrue(conjunto.invariante(conjunto.raiz()));
                 System.out.println(conjunto.toString());
                 assertEquals(false, conjunto.pertenece(k));
             }
@@ -301,7 +322,7 @@ class ABBTests {
                 assertEquals(true, conjunto.pertenece(k));
                 System.out.println("eliminar: " + k);
                 conjunto.eliminar(k);
-                System.out.println(conjunto.toString());
+                //System.out.println(conjunto.toString());
                 assertEquals(false,conjunto.pertenece(k));
             }
         }

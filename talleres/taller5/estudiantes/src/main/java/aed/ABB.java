@@ -8,8 +8,6 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     private Nodo _raiz;
     private int _cardinal;
     private int _altura;
-    private T _max;
-    private T _min;
 
     public class Nodo {
         // Agregar atributos privados del Nodo
@@ -51,8 +49,6 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         _raiz = null;
         _cardinal = 0;
         _altura = 0;
-        _max = null; //a eliminar.
-        _min = null; //a eliminar.
     }
 
     public int cardinal() {
@@ -137,19 +133,19 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
             //caso de que sea el unico nodo del árbol
             if (a_eliminar == _raiz) {
                 _raiz = null;
-            }
-
-            //caso en que no...
-            //borramos la conexion a su padre
-            if (a_eliminar._valor.compareTo(a_eliminar._padre._valor) < 0) {
-                a_eliminar._padre._izq = null; //podria ser una funcion que sea romper enlace padre/izq/der
-                a_eliminar._padre._hijos--; //abstraer esto porque se repite
-            }
+            } //TESTING ACA
             else {
-                a_eliminar._padre._der = null;
-                a_eliminar._padre._hijos--;
+                //caso en que no...
+                //borramos la conexion a su padre
+                if (a_eliminar._valor.compareTo(a_eliminar._padre._valor) < 0) {
+                    a_eliminar._padre._izq = null; //podria ser una funcion que sea romper enlace padre/izq/der
+                    a_eliminar._padre._hijos--; //abstraer esto porque se repite
+                }
+                else {
+                    a_eliminar._padre._der = null;
+                    a_eliminar._padre._hijos--;
+                }
             }
-
             //rompemos el enlace de este nodo a su antiguo padre.
             a_eliminar._padre = null;
 
@@ -170,6 +166,10 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
                     a_eliminar._padre._der = hijo;
                 }
             }
+            else {
+                _raiz = hijo;
+            }
+
 
         }
         else if (a_eliminar._hijos == 2) {
@@ -247,7 +247,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         Nodo sucesor;
 
         //maximo no tiene sucesor
-        if (actual._valor == _max) {
+        if (actual._valor == maximo()) {
             sucesor = null;
         }
         else if (actual._der != null) {
@@ -273,7 +273,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         Nodo antecesor;
 
         //minimo no tiene antecesor
-        if (actual._valor == _min) {
+        if (actual._valor == minimo()) {
             antecesor = null;
         }
 
@@ -301,5 +301,34 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     
     public Nodo raiz() {
         return _raiz;
+    }
+
+    private boolean ordenado(Nodo actual) { // debemos pasar la raiz;
+        boolean valido_izq;
+        boolean valido_der;
+
+        if (actual == null) {
+            return true;
+        }
+        
+        if (actual._izq == null) {
+            valido_izq = true;
+        }
+        else {
+            valido_izq = actual._valor.compareTo(actual._izq._valor) > 0;
+        }
+
+        if (actual._der == null) {
+            valido_der = true;
+        }
+        else {
+            valido_der = actual._valor.compareTo(actual._der._valor) < 0;
+        }
+
+        return valido_der && valido_izq && ordenado(actual._izq) && ordenado(actual._der);
+    }
+
+    public boolean invariante(Nodo actual) {
+        return ordenado(actual);
     }
 }
