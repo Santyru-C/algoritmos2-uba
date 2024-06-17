@@ -100,7 +100,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
             if (elem.compareTo(actual._valor) < 0) {
                 padre_actual = actual;
                 actual = actual._izq;
-            } 
+            }
             else {
                 padre_actual = actual;
                 actual = actual._der;

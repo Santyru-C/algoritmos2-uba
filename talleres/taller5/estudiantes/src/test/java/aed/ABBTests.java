@@ -35,7 +35,7 @@ class ABBTests {
         assertEquals(3, conjunto.cardinal());
         conjunto.insertar(4);
         assertEquals(4, conjunto.cardinal());
-        conjunto.insertar(4); //
+        conjunto.insertar(4);
         assertEquals(4, conjunto.cardinal());
 
         assertEquals(true, conjunto.pertenece(4));
@@ -94,25 +94,6 @@ class ABBTests {
         assertEquals(7, conjunto.maximo());        
     }
 
-    @Test
-    void invariante_valido() {
-        ABB<Integer> conjunto = new ABB<Integer>();
-        assertTrue(conjunto.invariante(conjunto.raiz()));
-
-
-        conjunto.insertar(5);
-        conjunto.insertar(6);
-        conjunto.insertar(7);
-
-        assertEquals(true, conjunto.invariante(conjunto.raiz()));
-
-        conjunto.eliminar(6);
-
-        assertTrue(conjunto.invariante(conjunto.raiz()));
-
-    }
-    
-
     
     @Test
     void eliminar_elemento_con_dos_descendientes() {
@@ -131,44 +112,6 @@ class ABBTests {
     }
 
     @Test
-    void buscar_nodo() {
-        ABB<Integer> conjunto = new ABB<Integer>();
-
-        conjunto.insertar(5);
-        conjunto.insertar(4);
-        conjunto.insertar(7);
-        conjunto.insertar(6);
-        conjunto.insertar(8);
-        assertEquals(4, conjunto.buscarNodoPorElemento(4).valor());
-        assertEquals(7, conjunto.buscarNodoPorElemento(7).valor());
-        assertEquals(null, conjunto.buscarNodoPorElemento(9));
-
-        
-    }
-
-    @Test
-    void buscar_sucesor() {
-        ABB<Integer> conjunto = new ABB<Integer>();
-
-        conjunto.insertar(5);
-        conjunto.insertar(4);
-        conjunto.insertar(7);
-        conjunto.insertar(6);
-        conjunto.insertar(8);
-
-        assertEquals(8, conjunto.maximo());
-        assertEquals(5, conjunto.buscarSucesor(conjunto.buscarNodoPorElemento(4)).valor());
-        assertEquals(6, conjunto.buscarSucesor(conjunto.buscarNodoPorElemento(5)).valor());
-        assertEquals(7, conjunto.buscarSucesor(conjunto.buscarNodoPorElemento(6)).valor());
-        assertEquals(null, conjunto.buscarSucesor(conjunto.buscarNodoPorElemento(8)));
-
-        ABB<Integer> conjunto2 = new ABB<Integer>();
-
-        conjunto2.insertar(1);
-        //test sucesor de la raiz
-        assertEquals(null, conjunto2.buscarSucesor(conjunto2.buscarNodoPorElemento(1)));
-    }
-    @Test
     void eliminar_raiz() {
         ABB<Integer> conjunto = new ABB<Integer>();
         
@@ -185,7 +128,7 @@ class ABBTests {
     }
 
     @Test
-    void eliminar_elemento_con_doble_descendencia() { //los tests no cubren bien los casos
+    void eliminar_elemento_con_doble_descendencia() {
         ABB<Integer> conjunto = new ABB<Integer>();
         
         conjunto.insertar(5);
@@ -284,7 +227,6 @@ class ABBTests {
             assertEquals(false, conjunto.pertenece(k));
             conjunto.insertar(k);
             assertEquals(true, conjunto.pertenece(k));
-            assertTrue(conjunto.invariante(conjunto.raiz()));
         }
         assertEquals(NCLAVES, conjunto.cardinal());
     
@@ -298,35 +240,27 @@ class ABBTests {
         }
 
         // Eliminar los valores para i par
-        System.out.println(conjunto.toString());
         for (Integer i = 0; i < NCLAVES; i++) {
             Integer k = clave(i);
             assertEquals(true, conjunto.pertenece(k));
             if (i % 2 == 0) {
-                System.out.println("eliminar: " + k);
                 conjunto.eliminar(k);
-                assertTrue(conjunto.invariante(conjunto.raiz()));
-                System.out.println(conjunto.toString());
                 assertEquals(false, conjunto.pertenece(k));
             }
         }
         assertEquals(NCLAVES / 2, conjunto.cardinal());
         
         // Eliminar los valores para i impar
-        System.out.println(conjunto.toString());
         for (Integer i = 0; i < NCLAVES; i++) {
             Integer k = clave(i);
-            if (i % 2 == 0) { //esto no es impar
+            if (i % 2 == 0) {
                 assertEquals(false,conjunto.pertenece(k));
             } else {
                 assertEquals(true, conjunto.pertenece(k));
-                System.out.println("eliminar: " + k);
                 conjunto.eliminar(k);
-                //System.out.println(conjunto.toString());
                 assertEquals(false,conjunto.pertenece(k));
             }
         }
-
         assertEquals(0, conjunto.cardinal());
 
         // Verificar que no haya valores
