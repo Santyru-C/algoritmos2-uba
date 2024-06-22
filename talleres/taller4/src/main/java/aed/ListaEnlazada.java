@@ -54,7 +54,7 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         _size++;
     }
 
-    public T obtener(int i) {
+    public T obtener(int i) { //O(n)
         return getNodeByIndex(i).value;
     }
 
@@ -63,20 +63,20 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         if (_size != 1) { //estoy totalmente seguro que esto puede ser mas lindo
             Nodo toDelete;
 
-            if (i == 0) { //guarda 0(1)
+            if (i == 0) { //total del bloque 0(1)
                 toDelete = _firstNode; //0(1)
                 toDelete.next.prev = toDelete.prev; //0(1)
                 _firstNode = toDelete.next; //actualizamos el puntero 0(1)
             }
-            else if (i == _size - 1) {
+            else if (i == _size - 1) { //total del bloque O(1)
                 toDelete = _lastNode; //O(1)
                 toDelete.prev.next = toDelete.next; //O(1)
                 _lastNode = toDelete.prev; //O(1)
             }
-            else {
-                toDelete = getNodeByIndex(i); // 0(n)
-                toDelete.next.prev = toDelete.prev; // link current's adyacent nodes with eachother.
-                toDelete.prev.next = toDelete.next;
+            else { //total de bloque O(n)
+                toDelete = getNodeByIndex(i); // O(n)
+                toDelete.next.prev = toDelete.prev; // link current's adyacent nodes with eachother.O(1)
+                toDelete.prev.next = toDelete.next; // O(1)
             }
 
         }    
@@ -88,8 +88,8 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         _size--;
     }
 
-    public void eliminarUltimo() { // acceso rapido 
-        eliminar(_size - 1); //
+    public void eliminarUltimo() { // acceso rapido O(1) ya que representa uno de los 3 mejores casos de eliminar
+        eliminar(_size - 1); //siempre eliminamos el ultimo.
     }
 
     public void modificarPosicion(int indice, T elem) {
@@ -178,11 +178,11 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         _lastNode = newNode;
     }
 
-    private Nodo getNodeByIndex(int i) {
-        Nodo currentNode = _firstNode;
+    private Nodo getNodeByIndex(int i) { //O(n) en el peor caso queremos obtener el ultimo nodo
+        Nodo currentNode = _firstNode; //O(1)
         
-        for (int j = 0; j < i; j++) {
-            currentNode = currentNode.next;
+        for (int j = 0; j < i; j++) { //numero de ejecuciones O(n) ya que siempre recorre del primero al nodo a obtener 
+            currentNode = currentNode.next; //O(1)
         }
 
         return currentNode;
