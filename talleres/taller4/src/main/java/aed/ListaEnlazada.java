@@ -126,18 +126,22 @@ public class ListaEnlazada<T> implements Secuencia<T> {
     }
     
     @Override
-    public String toString() {
+    public String toString() { //O(n)
         // devuelve la conversion a string de un array que contiene todos los valores
         // correspondientes a cada eslabon de la lista.
         //me encanta que java no te deje crear arrays genericos de tipo T...
 
-        String values = "[" + this.obtener(0) + ","; // agregamos el primero
+        Nodo actual = _firstNode;
 
-        for (int i = 1; i < _size - 1; i++) {
-            values = values + " " + this.obtener(i) + ","; //agregamos los del medio
+        String values = "[" + actual.value + ","; // agregamos el primero
+
+        for (int i = 1; i < _size - 1; i++) { //O(n) se va a repetir la longitud - 2 que representa los extremos. Sigue siendo tiempo lineal
+            actual = actual.next;
+            values = values + " " + actual.value + ","; //agregamos los del medio
         }
 
-        return values + " " + this.obtener(_size - 1) + "]"; //y por ultimo el final
+        actual = actual.next; //O(1)
+        return values + " " + actual.value + "]"; //O(1) y por ultimo el final
 
         //seguramente esto sea un poco mas "sencillo" importando listas.
     }
