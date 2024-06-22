@@ -58,24 +58,38 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         return getNodeByIndex(i).value;
     }
 
-    public void eliminar(int i) {
-        Nodo toDelete = getNodeByIndex(i);
+    public void eliminar(int i) { // O(n) en el peor caso donde los nodos a eliminar no sean extremos o sea el unico. 
+        
         if (_size != 1) { //estoy totalmente seguro que esto puede ser mas lindo
-            
-            if (toDelete == _firstNode) {
-                toDelete.next.prev = toDelete.prev;
-                _firstNode = toDelete.next; //actualizamos el puntero
+            Nodo toDelete;
+
+            if (i == 0) { //guarda 0(1)
+                toDelete = _firstNode; //0(1)
+                toDelete.next.prev = toDelete.prev; //0(1)
+                _firstNode = toDelete.next; //actualizamos el puntero 0(1)
             }
-            else if (toDelete == _lastNode) {
-                toDelete.prev.next = toDelete.next;
-                _lastNode = toDelete.prev;
+            else if (i == _size - 1) {
+                toDelete = _lastNode; //O(1)
+                toDelete.prev.next = toDelete.next; //O(1)
+                _lastNode = toDelete.prev; //O(1)
             }
             else {
+                toDelete = getNodeByIndex(i); // 0(n)
                 toDelete.next.prev = toDelete.prev; // link current's adyacent nodes with eachother.
                 toDelete.prev.next = toDelete.next;
             }
+
         }    
+        else {
+            _firstNode = null; // O(1)
+            _lastNode = null; // O(1)
+        }
+
         _size--;
+    }
+
+    public void eliminarUltimo() { // acceso rapido 
+        eliminar(_size - 1); //
     }
 
     public void modificarPosicion(int indice, T elem) {
@@ -168,11 +182,6 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         Nodo currentNode = _firstNode;
         
         for (int j = 0; j < i; j++) {
-            System.out.println("----");
-            System.out.println(currentNode.prev);
-            System.out.println(currentNode);
-            System.out.println(currentNode.value);
-            System.out.println(currentNode.next);
             currentNode = currentNode.next;
         }
 
